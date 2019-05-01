@@ -1,0 +1,7 @@
+Export to CSV in R
+
+https://stat.ethz.ch/R-manual/R-devel/library/utils/html/write.table.html
+
+http://rprogramming.net/write-csv-in-r/
+
+write.csv(t2,file = "map2AccountID.csv");
