@@ -1,0 +1,61 @@
+chartTitle <- paste("Avg Score for",format(sum(dataset$OpportunityCount,na.rm=TRUE),big.mark=",",scientific=FALSE));
+chartTitle <- paste(chartTitle,"optys");
+library(ggplot2);
+library(gridExtra);
+library(dplyr);
+df1 <- dataset[,c("Region","Score","OpportunityCount")]
+g1 <- group_by(df1,Region)
+df1_2 <- summarise(g1, mean=weighted.mean(Score,OpportunityCount) * 100)
+c1 <- ggplot(df1_2,aes(x=mean,y=reorder(Region,mean))) + 
+geom_point(size=3) + 
+xlab("Average Score") + 
+ylab("Region") + 
+labs(title = chartTitle)  + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=60, hjust=1),panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank(),panel.grid.major.x = element_line(colour="grey60", linetype="dashed"));
+c1;
+df2 <- dataset[,c("TacticCategory","Score","OpportunityCount")];
+g2 <- group_by(df2,TacticCategory);
+df2_2 <- summarise(g2, mean=weighted.mean(Score,OpportunityCount) * 100);
+c2 <- ggplot(df2_2,aes(x=mean,y=reorder(TacticCategory,mean))) + 
+geom_point(size=3) + 
+xlab("Average Score") + 
+ylab("Tactic Category") + 
+labs(title = " ")  + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=60, hjust=1),panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank(),panel.grid.major.x = element_line(colour="grey60", linetype="dashed"));
+c2;
+df3 <- dataset[,c("OpportunitySource","Score","OpportunityCount")];
+g3 <- group_by(df3,OpportunitySource);
+df3_2 <- summarise(g3, mean=weighted.mean(Score,OpportunityCount) * 100);
+c3 <- ggplot(df3_2,aes(x=mean,y=reorder(OpportunitySource,mean))) + 
+geom_point(size=3) + 
+xlab("Average Score") + 
+ylab("Opportunity Source") + 
+labs(title = " ")  + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=60, hjust=1),panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank(),panel.grid.major.x = element_line(colour="grey60", linetype="dashed"));
+c3;
+df4 <- dataset[,c("OpportunityCreateMonth","Score","OpportunityCount")];
+g4 <- group_by(df4,OpportunityCreateMonth);
+df4_2 <- summarise(g4, mean=weighted.mean(Score,OpportunityCount) * 100);
+c4 <- ggplot(df4_2,aes(x=mean,y=reorder(OpportunityCreateMonth,mean))) + 
+geom_point(size=3) + 
+xlab("Average Score") + 
+ylab("Opportunity Create Month") + 
+labs(title = " ")  + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=60, hjust=1),panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank(),panel.grid.major.x = element_line(colour="grey60", linetype="dashed"));
+c4;
+df5 <- dataset[,c("Segment","Score","OpportunityCount")];
+g5 <- group_by(df5,Segment);
+df5_2 <- summarise(g5, mean=weighted.mean(Score,OpportunityCount) * 100);
+c5 <- ggplot(df5_2,aes(x=mean,y=reorder(Segment,mean))) + 
+geom_point(size=3) + 
+xlab("Average Score") + 
+ylab("Segment") + 
+labs(title = " ")  + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=60, hjust=1),panel.grid.major.y = element_blank(),panel.grid.minor.y = element_blank(),panel.grid.major.x = element_line(colour="grey60", linetype="dashed"));
+c5;
+grid.arrange(c1,c2,c3,c4,c5, ncol = 5, nrow = 1);

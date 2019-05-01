@@ -1,0 +1,136 @@
+library(gridExtra)
+library(grid);
+library(tools);
+
+#Rename a column
+names(dataset)[names(dataset)=="Quarter"] <- "TimeScenario";
+
+# Order data
+df <- dataset[order(dataset$MetricScenario,dataset$TimeScenario),];
+
+# first section
+df_label <- df[df$MetricScenario == "Sold In - Distributed Out",c("TimeScenario","Country")];
+c1 <- (x1y1 <- df_label$Country[1]) 
+c5 <- (x1y2 <- "Quarter") 
+c13 <- (x1y3 <- df_label$TimeScenario[1])
+c21 <- (x1y4 <- df_label$TimeScenario[2]) 
+c29 <- (x1y5 <- paste(df_label$TimeScenario[3]," delta",sep="")) 
+c37 <- (x1y6 <- "YTD / YoY*")
+
+# second section
+df_sido <- df[df$MetricScenario == "Sold In - Distributed Out",c("MetricScenario","Revenue","RUI")];
+c2 <- (x2x3y1 <- "Sold In, Distributed Out")
+c6 <- (x2y2 <- "Revenue")
+c14 <- (x2y3 <- df_sido$Revenue[1]) 
+c22 <- (x2y4 <- df_sido$Revenue[2]) 
+c30 <- (x2y5 <- "") 
+c38 <- (x2y6 <- "$M")
+
+c7 <- (x3y2 <- "RUI %")
+c15 <- (x3y3 <- df_sido$RUI[1]) 
+c23 <- (x3y4 <- df_sido$RUI[2]) 
+c31 <- (x3y5 <- df_sido$RUI[3]) 
+c39 <- (x3y6 <- "X%")
+
+# third section
+df_sidi <- df[df$MetricScenario == "Sold In - Distributed In",c("MetricScenario","Revenue","RUI","Rec")];
+c3 <- (x4x5x6y1 <- "Sold In, Distributed In") 
+c8 <- (x4y2 <- "Revenue")
+c16 <- (x4y3 <- df_sidi$Revenue[1]) 
+c24 <- (x4y4 <- df_sidi$Revenue[2])
+c32 <- (x4y5 <- "") 
+c40 <- (x4y6 <- "$M")
+
+c9 <- (x5y2 <- "RUI %")
+c17 <- (x5y3 <- df_sidi$RUI[1]) 
+c25 <- (x5y4 <- df_sidi$RUI[2]) 
+c33 <- (x5y5 <- df_sidi$RUI[3]) 
+c41 <- (x5y6 <- "X%")
+
+c10 <- (x6y2 <- "Rec %")
+c18 <- (x6y3 <- df_sidi$Rec[1]) 
+c26 <- (x6y4 <- df_sidi$Rec[2]) 
+c34 <- (x6y5 <- df_sidi$Rec[3]) 
+c42 <- (x6y6 <- "X%")
+ 
+# fourth section
+df_sodi <- df[df$MetricScenario == "Sold Out - Distributed In",c("MetricScenario","Revenue","Rec")];
+c4 <- (x7x8y1 <- "Sold Out, Distributed In") 
+c11 <- (x7y2 <- "Revenue")
+c19 <- (x7y3 <- df_sodi$Revenue[1])
+c27 <- (x7y4 <- df_sodi$Revenue[2]) 
+c35 <- (x7y5 <- "") 
+c43 <- (x7y6 <- "$M")
+
+c12 <- (x8y2 <- "Rec %")
+c20 <- (x8y3 <- df_sodi$Rec[1]) 
+c28 <- (x8y4 <- df_sodi$Rec[2]) 
+c36 <- (x8y5 <- df_sodi$Rec[3]) 
+c44 <- (x8y6 <- "X%")
+
+# Put table data together. Cell 1 to cell 44 (c1 to c44). 
+tData <- lapply(1:44,function(c){
+		# Format first header row
+		if(c %in% list(2,3,4)){
+			f <- "ivory4";
+			ff <- "bold";
+		}
+		
+		# Format second header row
+		if(c %in% list(6,7,8,9,10,11,12)){
+			f <- "ivory3";
+			ff <- "bold";
+		}
+		
+		# Format data row
+		if(c > 12 & !(c %in% list(5,13,21,29,37))){
+			f <- "ivory1";
+			ff <- "plain";
+		}
+		
+		# Format first cell
+		if(c == 1){
+			f <- "ivory3";
+			ff <- "plain";
+		}
+		
+		# Format label column		
+		if(c %in% list(5,13,21,29,37)){
+			f <- "ivory4";
+			ff <- "bold";
+		}
+		
+		# Format last row to be italic
+		if(c > 36){
+			if(ff == "bold"){
+				ff <- "bold.italic";
+			}
+			else{
+				ff <- "italic";
+			}
+		}
+		
+		# Create grob
+		grobTree(
+			rectGrob(
+				gp=gpar(fill=f,alpha=0.5)
+			),
+			textGrob(
+				get(paste("c",c,sep="")),gp=gpar(fontface=ff)
+			)
+		)
+	}
+);	
+
+# Specify table layout
+tLayout <- rbind(
+	c(1,2,2,3,3,3,4,4),
+	c(5,6,7,8,9,10,11,12),
+	c(13,14,15,16,17,18,19,20),
+	c(21,22,23,24,25,26,27,28),
+	c(29,30,31,32,33,34,35,36),
+	c(37,38,39,40,41,42,43,44)
+);
+
+# Display table
+grid.arrange(grobs = tData, layout_matrix = tLayout);
