@@ -1,6 +1,6 @@
 dbName <- "[db name]"
 
-conn <- mongo.create(
+mongo <- mongo.create(
 	host = "[mongoDB instance]",
 	db = dbName,
 	username = "[user name]",
@@ -11,4 +11,4 @@ json <- '{"frequency.period":"yearly"}'
 coll <- "widget"
 ns <- paste(dbName,coll,sep=".");
 
-conn.is.connected(conn)
+mongo.is.connected(mongo)
