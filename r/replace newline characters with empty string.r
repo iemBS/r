@@ -1,0 +1,2 @@
+
+myCleanedUpText <- gsub("\n","",myTextVariable)
