@@ -1,6 +1,6 @@
 dbName <- "[db name]"
 
-conn <- mongo.create(
+mongo <- mongo.create(
 	host = "[mongoDB instance]",
 	db = dbName,
 	username = "[user name]",
@@ -11,9 +11,9 @@ json <- '{"frequency.period":"yearly"}'
 coll <- "widget"
 ns <- paste(dbName,coll,sep=".");
 
-if(conn.is.connected(conn) == TRUE){
-	max <- conn.count(
-			conn,
+if(mongo.is.connected(mongo) == TRUE){
+	max <- mongo.count(
+			mongo,
 			ns,
 			query=json
 		)
